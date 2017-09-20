@@ -25,7 +25,7 @@ class BusinessesViewController: UIViewController {
                 }
             }
             
-            }
+        }
         )
         
         /* Example of Yelp search with more search options specified
