@@ -8,25 +8,24 @@
 
 import UIKit
 
-class BusinessesViewController: UIViewController {
+class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var businesses: [Business]!
+    @IBOutlet weak var tableView: UITableView!
+
+    var businesses: [Business]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.delegate = self
+        tableView.dataSource = self
 
-        Business.searchWithTerm(term: "Thai", completion: { (businesses: [Business]?, error: Error?) -> Void in
+        Business.searchWithTerm(term: "Thai", completion: { [weak self] (businesses: [Business]?, error: Error?) -> Void in
+
+            self?.businesses = businesses
+            self?.tableView.reloadData()
             
-            self.businesses = businesses
-            if let businesses = businesses {
-                for business in businesses {
-                    print(business.name!)
-                    print(business.address!)
-                }
-            }
-            
-        }
-        )
+        })
         
         /* Example of Yelp search with more search options specified
          Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
@@ -55,5 +54,20 @@ class BusinessesViewController: UIViewController {
      // Pass the selected object to the new view controller.
      }
      */
+
+    // MARK: - tableView data source
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let businesses = businesses {
+            return businesses.count
+        }
+        return 0
+    }
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "BusinessCell", for: indexPath) as! BusinessCell
+
+        cell.business = businesses![indexPath.row]
+
+        return cell
+    }
 }
