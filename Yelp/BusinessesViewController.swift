@@ -8,9 +8,14 @@
 
 import UIKit
 
-class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+let DEFAULT_QUERY = "Restaurants"
+
+class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
     @IBOutlet weak var tableView: UITableView!
+    
+    var searchbar: UISearchBar!
+    var timer = Timer()
 
     var businesses: [Business]?
     
@@ -21,8 +26,15 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         tableView.dataSource = self
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 120
+        
+        searchbar = UISearchBar()
+        searchbar.delegate = self
+        searchbar.sizeToFit()
+        navigationItem.titleView = searchbar
+        
+        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
 
-        Business.searchWithTerm(term: "Thai", completion: { [weak self] (businesses: [Business]?, error: Error?) -> Void in
+        Business.searchWithTerm(term: DEFAULT_QUERY, completion: { [weak self] (businesses: [Business]?, error: Error?) -> Void in
 
             self?.businesses = businesses
             self?.tableView.reloadData()
@@ -41,10 +53,34 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
          */
         
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+
+    // MARK: - Search bar delegate
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        let searchText = searchbar.text
+        timer.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(BusinessesViewController.doSearch), userInfo: searchText, repeats: false)
+
+    }
+    
+    @objc fileprivate func doSearch() {
+        guard var query = timer.userInfo as? String else {
+            return
+        }
+        if query == "" {
+            query = DEFAULT_QUERY
+        }
+        Business.searchWithTerm(term: query, completion: { [weak self] (businesses: [Business]?, error: Error?) -> Void in
+            
+            self?.businesses = businesses
+            self?.tableView.reloadData()
+        })
     }
     
     /*
