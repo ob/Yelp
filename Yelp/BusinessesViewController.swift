@@ -22,8 +22,10 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     var filtersModel: FiltersViewModel = FiltersViewModel()
 
     var isDataLoading = false
+    var spinner: UIActivityIndicatorView?
     var offset = 0
     var limit = 20
+    var totalResults = 0
 
     
     override func viewDidLoad() {
@@ -33,7 +35,11 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         tableView.dataSource = self
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 120
-        
+
+        spinner = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        spinner!.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 44)
+        tableView.tableFooterView = spinner
+
         searchbar = UISearchBar()
         searchbar.delegate = self
         searchbar.sizeToFit()
@@ -60,14 +66,42 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     @objc fileprivate func doSearch() {
+        if query == "" {
+            query = DEFAULT_QUERY
+        }
+        isDataLoading = true
+        offset = 0
         Business.searchWithTerm(term: query,
                                 filterModel: filtersModel,
                                 offset: offset,
                                 limit: limit,
-                                completion: { [weak self] (businesses: [Business]?, error: Error?) -> Void in
-            
-            self?.businesses = businesses
-            self?.tableView.reloadData()
+                                completion: { [weak self] (businesses: [Business]?, results: Int?, error: Error?) -> Void in
+                                    self?.isDataLoading = false
+                                    self?.totalResults = results!
+                                    self?.businesses = businesses
+                                    self?.tableView.reloadData()
+        })
+    }
+
+    fileprivate func moreData() {
+        offset = offset + limit
+        guard offset < totalResults else {
+            return
+        }
+        isDataLoading = true
+        spinner?.startAnimating()
+        Business.searchWithTerm(term: query,
+                                filterModel: filtersModel,
+                                offset: offset,
+                                limit: limit,
+                                completion: { [weak self] (businesses: [Business]?, results: Int?, error: Error?) -> Void in
+                                    self?.isDataLoading = false
+                                    self?.spinner?.stopAnimating()
+                                    self?.totalResults = results!
+                                    if let businesses = businesses {
+                                        self?.businesses?.append(contentsOf: businesses)
+                                        self?.tableView.reloadData()
+                                    }
         })
     }
     
@@ -97,5 +131,11 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         cell.business = businesses![indexPath.row]
 
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if (indexPath.row == businesses!.count - 1) && !isDataLoading {
+            moreData()
+        }
     }
 }

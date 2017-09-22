@@ -27,6 +27,7 @@
 		C462C8C51F7484EA009E1BB4 /* FiltersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C8C41F7484EA009E1BB4 /* FiltersViewModel.swift */; };
 		C462C8C71F74879A009E1BB4 /* Distance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C8C61F74879A009E1BB4 /* Distance.swift */; };
 		C462C8C91F748A7F009E1BB4 /* SortBy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C8C81F748A7F009E1BB4 /* SortBy.swift */; };
+		C47879C91F7595AC006D1C29 /* InfiniteScrollActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47879C81F7595AC006D1C29 /* InfiniteScrollActivityView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		C462C8C41F7484EA009E1BB4 /* FiltersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewModel.swift; sourceTree = "<group>"; };
 		C462C8C61F74879A009E1BB4 /* Distance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Distance.swift; sourceTree = "<group>"; };
 		C462C8C81F748A7F009E1BB4 /* SortBy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortBy.swift; sourceTree = "<group>"; };
+		C47879C81F7595AC006D1C29 /* InfiniteScrollActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfiniteScrollActivityView.swift; sourceTree = "<group>"; };
 		C79C0AC126EDAA235847CEA2 /* Pods_Yelp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Yelp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF53DC2D7A8303A68532E7C6 /* Pods-Yelp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Yelp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Yelp/Pods-Yelp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -114,6 +116,7 @@
 		222D8A5719CCF9F900D2DB53 /* Yelp */ = {
 			isa = PBXGroup;
 			children = (
+				C47879CA1F7595C2006D1C29 /* CustomViews */,
 				C462C8BB1F746666009E1BB4 /* Cells */,
 				22AAAA9A1AEA0AA100A544AF /* Models */,
 				222D8A7A19CCFAAA00D2DB53 /* API */,
@@ -201,6 +204,14 @@
 				C462C8B51F743028009E1BB4 /* BusinessCell.swift */,
 			);
 			name = Cells;
+			sourceTree = "<group>";
+		};
+		C47879CA1F7595C2006D1C29 /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				C47879C81F7595AC006D1C29 /* InfiniteScrollActivityView.swift */,
+			);
+			name = CustomViews;
 			sourceTree = "<group>";
 		};
 		F64653F46DB3B45A24B65CDD /* Pods */ = {
@@ -430,6 +441,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C47879C91F7595AC006D1C29 /* InfiniteScrollActivityView.swift in Sources */,
 				C462C8BD1F7466CA009E1BB4 /* DistanceCell.swift in Sources */,
 				C462C8BF1F74670A009E1BB4 /* SortByCell.swift in Sources */,
 				C462C8B81F746092009E1BB4 /* FilterViewController.swift in Sources */,
