@@ -108,13 +108,16 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
      // MARK: - Navigation
      
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let nc = segue.destination as? UINavigationController,
-        let vc = nc.viewControllers.first as? FilterViewController else {
-            return
+        if let nc = segue.destination as? UINavigationController,
+            let vc = nc.viewControllers.first as? FilterViewController  {
+            vc.filtersModel = filtersModel
+            vc.onSearch = {[weak self] in self?.doSearch()}
         }
-        vc.filtersModel = filtersModel
-        vc.onSearch = {[weak self] in self?.doSearch()}
-
+        if let vc = segue.destination as? DetailsViewController,
+            let indexPath = tableView.indexPath(for: sender as! BusinessCell),
+            let currentBusiness = businesses?[indexPath.row] {
+            vc.business = currentBusiness
+        }
     }
 
     // MARK: - tableView data source

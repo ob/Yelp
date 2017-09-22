@@ -21,11 +21,7 @@ class BusinessCell: UITableViewCell {
         didSet {
             nameLabel.text = business.name
             distanceLabel.text = business.distance
-            if let reviews = business.reviewCount {
-                reviewsCountLabel.text = String(format: "%d Reviews", reviews)
-            } else {
-                reviewsCountLabel.text = ""
-            }
+            reviewsCountLabel.text = business.prettyReviews()
             addressLabel.text = business.address
             categoriesLabel.text = business.categories
             if let url = business.imageURL {

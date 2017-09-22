@@ -9,6 +9,7 @@
 import UIKit
 
 class Business: NSObject {
+    let id: String?
     let name: String?
     let address: String?
     let imageURL: URL?
@@ -16,9 +17,15 @@ class Business: NSObject {
     let distance: String?
     let ratingImageURL: URL?
     let reviewCount: NSNumber?
+    let latitude: String?
+    let longitude: String?
+    // more info fields
+    var bigRatingImageURL: URL?
+
     
     init(dictionary: NSDictionary) {
         name = dictionary["name"] as? String
+        id = dictionary["id"] as? String
         
         let imageURLString = dictionary["image_url"] as? String
         if imageURLString != nil {
@@ -29,6 +36,8 @@ class Business: NSObject {
         
         let location = dictionary["location"] as? NSDictionary
         var address = ""
+        var latitude: String? = nil
+        var longitude: String? = nil
         if location != nil {
             let addressArray = location!["address"] as? NSArray
             if addressArray != nil && addressArray!.count > 0 {
@@ -42,8 +51,15 @@ class Business: NSObject {
                 }
                 address += neighborhoods![0] as! String
             }
+            if let coordinate = location!["coordinate"] as? NSDictionary {
+                latitude = coordinate["latitude"] as? String
+                longitude = coordinate["longitude"] as? String
+            }
+
         }
         self.address = address
+        self.latitude = latitude
+        self.longitude = longitude
         
         let categoriesArray = dictionary["categories"] as? [[String]]
         if categoriesArray != nil {
@@ -74,6 +90,19 @@ class Business: NSObject {
         
         reviewCount = dictionary["review_count"] as? NSNumber
     }
+
+    func moreDetails(completion: @escaping () -> Void) {
+        _ = YelpClient.sharedInstance.detailsForBusiness(id: id!, completion: { [weak self] (dictionary: [String: Any]?, error: Error?) in
+            guard error == nil else {
+                return
+            }
+            if let bigImageURLString = dictionary?["ratin_image_url"] as? String,
+                let url = URL(string: bigImageURLString) {
+                self?.bigRatingImageURL = url
+            }
+            completion()
+        })
+    }
     
     class func businesses(array: [NSDictionary]) -> [Business] {
         var businesses = [Business]()
@@ -88,11 +117,10 @@ class Business: NSObject {
         _ = YelpClient.sharedInstance.searchWithTerm(term, filterModel: filterModel, offset: offset, limit: limit, completion: completion)
     }
 
-//    class func searchWithTerm(term: String, completion: @escaping ([Business]?, Error?) -> Void) {
-//        _ = YelpClient.sharedInstance.searchWithTerm(term, completion: completion)
-//    }
-//
-//    class func searchWithTerm(term: String, sort: SortByOption, categories: [String]?, deals: Bool?, completion: @escaping ([Business]?, Error?) -> Void) -> Void {
-//        _ = YelpClient.sharedInstance.searchWithTerm(term, sort: sort, categories: categories, deals: deals, completion: completion)
-//    }
+    func prettyReviews() -> String {
+        guard let reviewCount = reviewCount else {
+            return ""
+        }
+        return String(format: "%d Reviews", reviewCount)
+    }
 }

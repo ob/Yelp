@@ -71,4 +71,18 @@ class YelpClient: BDBOAuth1RequestOperationManager {
         })!
 
     }
+
+    func detailsForBusiness(id: String, completion: @escaping ([String:Any]?, Error?) -> Void) -> AFHTTPRequestOperation {
+        let escapedId = id.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+        return self.get("business/" + escapedId!, parameters:  nil,
+                        success: { (operation: AFHTTPRequestOperation, response: Any) -> Void in
+                            if let response = response as? [String: Any] {
+//                                print("RESPONSE: \(response)")
+                                completion(response, nil)
+                            }
+        },
+                        failure: { (operation: AFHTTPRequestOperation?, error: Error?) -> Void in
+                            completion(nil, error)
+        })!
+    }
 }
