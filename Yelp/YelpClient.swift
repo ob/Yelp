@@ -46,7 +46,7 @@ class YelpClient: BDBOAuth1RequestOperationManager {
                 parameters[model.yelpAPIKey] = value
             }
         }
-        print("Searching with \(parameters)")
+//        print("Searching with \(parameters)")
         return self.get("search", parameters: parameters,
                         success: { (operation: AFHTTPRequestOperation, response: Any) -> Void in
                             if let response = response as? [String: Any]{

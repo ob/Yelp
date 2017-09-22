@@ -232,8 +232,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SortBy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OO4-vi-HW3">
-                                                    <rect key="frame" x="8" y="11" width="75" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="SortBy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OO4-vi-HW3">
+                                                    <rect key="frame" x="16" y="11" width="75" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -241,7 +241,7 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="OO4-vi-HW3" firstAttribute="centerY" secondItem="5lA-1F-V1z" secondAttribute="centerY" id="2tF-fp-8VH"/>
-                                                <constraint firstItem="OO4-vi-HW3" firstAttribute="leading" secondItem="5lA-1F-V1z" secondAttribute="leading" constant="8" id="dN6-Mr-oRt"/>
+                                                <constraint firstItem="OO4-vi-HW3" firstAttribute="leading" secondItem="5lA-1F-V1z" secondAttribute="leading" constant="16" id="dN6-Mr-oRt"/>
                                                 <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="OO4-vi-HW3" secondAttribute="trailing" constant="292" id="dYf-TV-d7g"/>
                                             </constraints>
                                         </tableViewCellContentView>

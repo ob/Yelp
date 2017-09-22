@@ -22,15 +22,10 @@ protocol FiltersViewModelItem {
     var rowCount: Int { get }
     var sectionTitle: String? { get }
     var yelpAPIKey: String { get }
+    var collapsed: Bool { get }
     func yelpAPIValue() -> AnyObject?
     func beginEditing() -> Void
     func endEditing(commit: Bool) -> Void
-}
-
-extension FiltersViewModelItem {
-    var rowCount: Int {
-        return 1
-    }
 }
 
 class FiltersViewModelDealsItem: FiltersViewModelItem {
@@ -65,6 +60,9 @@ class FiltersViewModelDealsItem: FiltersViewModelItem {
             value = oldValue
         }
     }
+
+    var rowCount: Int = 1
+    var collapsed: Bool = false
 }
 
 class FiltersViewModelDistanceItem: FiltersViewModelItem {
@@ -80,6 +78,8 @@ class FiltersViewModelDistanceItem: FiltersViewModelItem {
     var selected: Int?
     var oldSelected: Int?
 
+    var collapsed: Bool = true
+
     init(distances: [Distance]) {
         self.distances = distances
         if self.distances.count > 0 {
@@ -88,6 +88,9 @@ class FiltersViewModelDistanceItem: FiltersViewModelItem {
     }
 
     var rowCount: Int {
+        if collapsed {
+            return 1
+        }
         return distances.count
     }
 
@@ -100,6 +103,7 @@ class FiltersViewModelDistanceItem: FiltersViewModelItem {
 
     func beginEditing() {
         oldSelected = selected
+        collapsed = true
     }
 
     func endEditing(commit: Bool) {
@@ -129,7 +133,11 @@ class FiltersViewModelSortByItem: FiltersViewModelItem {
         }
     }
 
+    var collapsed: Bool = true
     var rowCount: Int {
+        if collapsed {
+            return 1
+        }
         return options.count
     }
 
@@ -147,6 +155,7 @@ class FiltersViewModelSortByItem: FiltersViewModelItem {
 
     func beginEditing() {
         oldSelected = selected
+        collapsed = true
     }
 
     func endEditing(commit: Bool) {
@@ -175,7 +184,13 @@ class FiltersViewModelCategoriesItem: FiltersViewModelItem {
         self.oldSelected = selected
     }
 
+    var collapsed: Bool = true
+    var barrier: Int = 3 // How many cells to show in collapsed mode
+
     var rowCount: Int {
+        if collapsed {
+            return barrier + 1
+        }
         return categories.count
     }
 
@@ -200,6 +215,7 @@ class FiltersViewModelCategoriesItem: FiltersViewModelItem {
 
     func beginEditing() {
         oldSelected = selected
+        collapsed = true
     }
 
     func endEditing(commit: Bool) {
@@ -233,9 +249,17 @@ class FiltersViewModel: NSObject {
             item.endEditing(commit: commit)
         }
     }
+
+    func moreImageView() -> UIImageView {
+        let ret = UIImageView(frame: CGRect(x: 12, y: 12, width: 12, height: 12))
+        ret.contentMode = .scaleAspectFit
+        ret.image = #imageLiteral(resourceName: "down-arrow")
+        return ret
+    }
 }
 
 extension FiltersViewModel: UITableViewDataSource, UITableViewDelegate {
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return items.count
     }
@@ -256,32 +280,49 @@ extension FiltersViewModel: UITableViewDataSource, UITableViewDelegate {
         case .distance:
             if let cell = tableView.dequeueReusableCell(withIdentifier: "DistanceCell", for: indexPath) as? DistanceCell,
                 let item = item as? FiltersViewModelDistanceItem {
-                cell.item = item.distances[indexPath.row]
-                if item.selected! == indexPath.row {
-                    cell.accessoryType = .checkmark
+                if item.collapsed && indexPath.row == 0 {
+                    cell.item = item.distances[item.selected!]
+                    cell.accessoryView = moreImageView()
                 } else {
-                    cell.accessoryType = .none
+                    cell.item = item.distances[indexPath.row]
+                    if item.selected! == indexPath.row {
+                        cell.accessoryType = .checkmark
+                    } else {
+                        cell.accessoryType = .none
+                    }
                 }
                 return cell
             }
         case .sortBy:
             if let cell = tableView.dequeueReusableCell(withIdentifier: "SortByCell", for: indexPath) as? SortByCell,
                 let item = item as? FiltersViewModelSortByItem {
-                cell.item = item.options[indexPath.row]
-                if item.selected! == indexPath.row {
-                    cell.accessoryType = .checkmark
+                if item.collapsed && indexPath.row == 0 {
+                    cell.item = item.options[item.selected!]
+                    cell.accessoryView = moreImageView()
                 } else {
-                    cell.accessoryType = .none
+                    cell.item = item.options[indexPath.row]
+                    if item.selected! == indexPath.row {
+                        cell.accessoryType = .checkmark
+                    } else {
+                        cell.accessoryType = .none
+                    }
                 }
                 return cell
             }
         case .category:
             if let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath) as? CategoryCell,
                 let item = item as? FiltersViewModelCategoriesItem {
-                cell.item = item.categories[indexPath.row]
-                cell.categorySwitch.isOn = item.selected[indexPath.row] ?? false
-                cell.onSwitchTapped = {(isOn: Bool) in
-                    item.selected[indexPath.row] = isOn
+                if item.collapsed && indexPath.row == item.barrier {
+                    let cell = UITableViewCell()
+                    cell.textLabel?.text = "See More"
+                    cell.textLabel?.textAlignment = .center
+                    return cell
+                } else {
+                    cell.item = item.categories[indexPath.row]
+                    cell.categorySwitch.isOn = item.selected[indexPath.row] ?? false
+                    cell.onSwitchTapped = {(isOn: Bool) in
+                        item.selected[indexPath.row] = isOn
+                    }
                 }
                 return cell
             }
@@ -301,26 +342,48 @@ extension FiltersViewModel: UITableViewDataSource, UITableViewDelegate {
         case .distance:
             if let cell = tableView.cellForRow(at: indexPath) as? DistanceCell,
                 let item = item  as? FiltersViewModelDistanceItem {
-                if item.selected! != indexPath.row {
-                    let ip = IndexPath(row: item.selected!, section: indexPath.section)
-                    let selectedCell = tableView.cellForRow(at: ip)!
-                    selectedCell.accessoryType = .none
-                    cell.accessoryType = .checkmark
-                    item.selected = indexPath.row
+                if item.collapsed && indexPath.row == 0 {
+                    cell.accessoryView = nil
+                    item.collapsed = false
+                    tableView.reloadSections([indexPath.section], with: .automatic)
+                } else {
+                    if item.selected! != indexPath.row {
+                        let ip = IndexPath(row: item.selected!, section: indexPath.section)
+                        let selectedCell = tableView.cellForRow(at: ip)!
+                        selectedCell.accessoryType = .none
+                        cell.accessoryType = .checkmark
+                        item.selected = indexPath.row
+                        item.collapsed = true
+                        tableView.reloadSections([indexPath.section], with: .automatic)
+                    }
                 }
             }
         case .sortBy:
             if let cell = tableView.cellForRow(at: indexPath) as? SortByCell,
                 let item = item as? FiltersViewModelSortByItem {
-                if item.selected != indexPath.row {
-                    let ip = IndexPath(row: item.selected!, section: indexPath.section)
-                    let selectedCell = tableView.cellForRow(at: ip)!
-                    selectedCell.accessoryType = .none
-                    cell.accessoryType = .checkmark
-                    item.selected = indexPath.row
+                if item.collapsed && indexPath.row == 0 {
+                    cell.accessoryView = nil
+                    item.collapsed = false
+                    tableView.reloadSections([indexPath.section], with: .automatic)
+                } else {
+                    if item.selected != indexPath.row {
+                        let ip = IndexPath(row: item.selected!, section: indexPath.section)
+                        let selectedCell = tableView.cellForRow(at: ip)!
+                        selectedCell.accessoryType = .none
+                        cell.accessoryType = .checkmark
+                        item.selected = indexPath.row
+                        item.collapsed = true
+                        tableView.reloadSections([indexPath.section], with: .automatic)
+                    }
                 }
             }
         case .category:
+            if let item = item as? FiltersViewModelCategoriesItem {
+                if item.collapsed && indexPath.row == item.barrier {
+                    item.collapsed = false
+                    tableView.reloadSections([indexPath.section], with: .automatic)
+                }
+            }
             return
         }
     }
