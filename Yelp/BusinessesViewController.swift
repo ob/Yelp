@@ -18,6 +18,8 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     var timer = Timer()
 
     var businesses: [Business]?
+    var filtersModel: FiltersViewModel = FiltersViewModel()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,13 +36,8 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         
         navigationController?.navigationBar.barTintColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
 
-        Business.searchWithTerm(term: DEFAULT_QUERY, completion: { [weak self] (businesses: [Business]?, error: Error?) -> Void in
+        doSearch()
 
-            self?.businesses = businesses
-            self?.tableView.reloadData()
-            
-        })
-        
         /* Example of Yelp search with more search options specified
          Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
          self.businesses = businesses
@@ -70,28 +67,30 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     @objc fileprivate func doSearch() {
-        guard var query = timer.userInfo as? String else {
-            return
-        }
-        if query == "" {
+        var query: String
+        if let searchQuery = timer.userInfo as? String {
+            query = searchQuery
+        } else {
             query = DEFAULT_QUERY
         }
-        Business.searchWithTerm(term: query, completion: { [weak self] (businesses: [Business]?, error: Error?) -> Void in
+        Business.searchWithTerm(term: query, filterModel: filtersModel, completion: { [weak self] (businesses: [Business]?, error: Error?) -> Void in
             
             self?.businesses = businesses
             self?.tableView.reloadData()
         })
     }
     
-    /*
      // MARK: - Navigation
      
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let nc = segue.destination as? UINavigationController,
+        let vc = nc.viewControllers.first as? FilterViewController else {
+            return
+        }
+        vc.filtersModel = filtersModel
+        vc.onSearch = {[weak self] in self?.doSearch()}
+
+    }
 
     // MARK: - tableView data source
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
