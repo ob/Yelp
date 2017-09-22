@@ -16,6 +16,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     
     var searchbar: UISearchBar!
     var timer = Timer()
+    var query: String = DEFAULT_QUERY
 
     var businesses: [Business]?
     var filtersModel: FiltersViewModel = FiltersViewModel()
@@ -34,7 +35,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         searchbar.sizeToFit()
         navigationItem.titleView = searchbar
         
-        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
+        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.8288504481, green: 0.1372715533, blue: 0.1384659708, alpha: 1)
 
         doSearch()
 
@@ -60,19 +61,13 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     // MARK: - Search bar delegate
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let searchText = searchbar.text
+        query = searchbar.text ?? query
         timer.invalidate()
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(BusinessesViewController.doSearch), userInfo: searchText, repeats: false)
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(BusinessesViewController.doSearch), userInfo: searchbar.text, repeats: false)
 
     }
     
     @objc fileprivate func doSearch() {
-        var query: String
-        if let searchQuery = timer.userInfo as? String {
-            query = searchQuery
-        } else {
-            query = DEFAULT_QUERY
-        }
         Business.searchWithTerm(term: query, filterModel: filtersModel, completion: { [weak self] (businesses: [Business]?, error: Error?) -> Void in
             
             self?.businesses = businesses

@@ -18,7 +18,7 @@ class FilterViewController: UIViewController {
         super.viewDidLoad()
 
         navigationController?.navigationBar.barStyle = .black
-        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
+        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.8288504481, green: 0.1372715533, blue: 0.1384659708, alpha: 1)
         navigationController?.navigationBar.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         let navigationTitleFont = UIFont(name: "Avenir", size: 20)!
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: navigationTitleFont]
