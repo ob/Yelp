@@ -39,17 +39,26 @@ class YelpClient: BDBOAuth1RequestOperationManager {
         self.requestSerializer.saveAccessToken(token)
     }
 
-    func searchWithTerm(_ term: String, filterModel: FiltersViewModel, completion: @escaping ([Business]?, Error?) -> Void) -> AFHTTPRequestOperation {
+    func searchWithTerm(_ term: String, filterModel: FiltersViewModel, offset: Int?, limit: Int?, completion: @escaping ([Business]?, Error?) -> Void) -> AFHTTPRequestOperation {
         var parameters: [String : AnyObject] = ["term": term as AnyObject, "ll": "37.785771,-122.406165" as AnyObject]
+
         for model in filterModel.items {
             if let value = model.yelpAPIValue() {
                 parameters[model.yelpAPIKey] = value
             }
         }
+        if offset != nil {
+            parameters["offset"] = offset! as AnyObject
+        }
+        if limit != nil {
+            parameters["limit"] = limit! as AnyObject
+        }
+
 //        print("Searching with \(parameters)")
         return self.get("search", parameters: parameters,
                         success: { (operation: AFHTTPRequestOperation, response: Any) -> Void in
                             if let response = response as? [String: Any]{
+//                                print("RESPONSE: \(response)")
                                 let dictionaries = response["businesses"] as? [NSDictionary]
                                 if dictionaries != nil {
                                     completion(Business.businesses(array: dictionaries!), nil)
@@ -61,42 +70,4 @@ class YelpClient: BDBOAuth1RequestOperationManager {
         })!
 
     }
-    
-//    func searchWithTerm(_ term: String, completion: @escaping ([Business]?, Error?) -> Void) -> AFHTTPRequestOperation {
-//        return searchWithTerm(term, sort: nil, categories: nil, deals: nil, completion: completion)
-//    }
-//
-//    func searchWithTerm(_ term: String, sort: SortByOption?, categories: [String]?, deals: Bool?, completion: @escaping ([Business]?, Error?) -> Void) -> AFHTTPRequestOperation {
-//        // For additional parameters, see http://www.yelp.com/developers/documentation/v2/search_api
-//
-//        // Default the location to San Francisco
-//        var parameters: [String : AnyObject] = ["term": term as AnyObject, "ll": "37.785771,-122.406165" as AnyObject]
-//
-//        if sort != nil {
-//            parameters["sort"] = sort?.index as AnyObject?
-//        }
-//
-//        if categories != nil && categories!.count > 0 {
-//            parameters["category_filter"] = (categories!).joined(separator: ",") as AnyObject?
-//        }
-//
-//        if deals != nil {
-//            parameters["deals_filter"] = deals! as AnyObject?
-//        }
-//
-////        print(parameters)
-//
-//        return self.get("search", parameters: parameters,
-//                        success: { (operation: AFHTTPRequestOperation, response: Any) -> Void in
-//                            if let response = response as? [String: Any]{
-//                                let dictionaries = response["businesses"] as? [NSDictionary]
-//                                if dictionaries != nil {
-//                                    completion(Business.businesses(array: dictionaries!), nil)
-//                                }
-//                            }
-//                        },
-//                        failure: { (operation: AFHTTPRequestOperation?, error: Error) -> Void in
-//                            completion(nil, error)
-//                        })!
-//    }
 }

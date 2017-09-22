@@ -11,7 +11,7 @@ import UIKit
 let DEFAULT_QUERY = "Restaurants"
 
 class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
-    
+
     @IBOutlet weak var tableView: UITableView!
     
     var searchbar: UISearchBar!
@@ -20,6 +20,10 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
 
     var businesses: [Business]?
     var filtersModel: FiltersViewModel = FiltersViewModel()
+
+    var isDataLoading = false
+    var offset = 0
+    var limit = 20
 
     
     override func viewDidLoad() {
@@ -38,18 +42,6 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.8288504481, green: 0.1372715533, blue: 0.1384659708, alpha: 1)
 
         doSearch()
-
-        /* Example of Yelp search with more search options specified
-         Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
-         self.businesses = businesses
-         
-         for business in businesses {
-         print(business.name!)
-         print(business.address!)
-         }
-         }
-         */
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -68,7 +60,11 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     @objc fileprivate func doSearch() {
-        Business.searchWithTerm(term: query, filterModel: filtersModel, completion: { [weak self] (businesses: [Business]?, error: Error?) -> Void in
+        Business.searchWithTerm(term: query,
+                                filterModel: filtersModel,
+                                offset: offset,
+                                limit: limit,
+                                completion: { [weak self] (businesses: [Business]?, error: Error?) -> Void in
             
             self?.businesses = businesses
             self?.tableView.reloadData()
