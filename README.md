@@ -22,8 +22,8 @@ The following **required** functionality is completed:
 
 The following **optional** features are implemented:
 
-- [ ] Search results page
-   - [ ] Infinite scroll for restaurant results.
+- [x] Search results page
+   - [x] Infinite scroll for restaurant results.
    - [ ] Implement map view of restaurant results.
 - [x] Filter page
    - [ ] Implement a custom switch instead of the default UISwitch.
@@ -31,7 +31,7 @@ The following **optional** features are implemented:
    - [x] Categories should show a subset of the full list with a "See
      All" row to expand. Category list is
      [here](http://www.yelp.com/developers/documentation/category_list).
-- [ ] Implement the restaurant detail page.
+- [x] Implement the restaurant detail page.
 
 The following **additional** features are implemented:
 
