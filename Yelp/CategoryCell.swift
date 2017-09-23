@@ -23,7 +23,9 @@ class CategoryCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        // This is super-lame
+        categorySwitch.thumbTintColor = UIColor.init(patternImage: #imageLiteral(resourceName: "yelpcircle"))
+        categorySwitch.onTintColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
     }
 
     @IBAction func switchTapped(_ sender: Any) {
