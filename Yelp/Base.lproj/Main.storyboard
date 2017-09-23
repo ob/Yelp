@@ -375,7 +375,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yrc-h7-nbe">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yrc-h7-nbe">
                                 <rect key="frame" x="0.0" y="64" width="375" height="143.5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="143.5" id="AOT-Iq-Etj"/>
