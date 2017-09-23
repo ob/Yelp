@@ -7,13 +7,16 @@
 //
 
 import UIKit
+import MapKit
 
 let DEFAULT_QUERY = "Restaurants"
 
 class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
 
     @IBOutlet weak var tableView: UITableView!
-    
+    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var listMapButton: UIBarButtonItem!
+
     var searchbar: UISearchBar!
     var timer = Timer()
     var query: String = DEFAULT_QUERY
@@ -27,7 +30,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     var limit = 20
     var totalResults = 0
 
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -44,7 +47,9 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         searchbar.delegate = self
         searchbar.sizeToFit()
         navigationItem.titleView = searchbar
-        
+
+        listMapButton.title = "Map"
+
         navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.8288504481, green: 0.1372715533, blue: 0.1384659708, alpha: 1)
 
         doSearch()
@@ -118,6 +123,11 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
             let currentBusiness = businesses?[indexPath.row] {
             vc.business = currentBusiness
         }
+        if let nc = segue.destination as? UINavigationController,
+            let vc = nc.viewControllers.first as? MapViewController {
+            vc.filtersModel = filtersModel
+            vc.businesses = businesses
+        }
     }
 
     // MARK: - tableView data source
@@ -141,4 +151,14 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
             moreData()
         }
     }
+    @IBAction func didTapListMapButton(_ sender: Any) {
+        if listMapButton.title == "Map" {
+            listMapButton.title = "List"
+            UIView.transition(from: tableView, to: mapView, duration: 0.5, options: .transitionFlipFromLeft, completion: nil)
+        } else {
+            listMapButton.title = "Map"
+            UIView.transition(from: mapView, to: tableView, duration: 0.5, options: .transitionFlipFromRight, completion: nil)
+        }
+    }
+
 }

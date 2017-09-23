@@ -7,8 +7,13 @@
 //
 
 import UIKit
+import MapKit
 
-class Business: NSObject {
+class Business: NSObject, MKAnnotation {
+    var title: String?
+    var locationName: String?
+    var coordinate: CLLocationCoordinate2D
+
     let id: String?
     let name: String?
     let address: String?
@@ -17,14 +22,16 @@ class Business: NSObject {
     let distance: String?
     let ratingImageURL: URL?
     let reviewCount: NSNumber?
-    let latitude: String?
-    let longitude: String?
+    let latitude: Double?
+    let longitude: Double?
     // more info fields
     var bigRatingImageURL: URL?
 
     
     init(dictionary: NSDictionary) {
         name = dictionary["name"] as? String
+        title = name
+        locationName = name
         id = dictionary["id"] as? String
         
         let imageURLString = dictionary["image_url"] as? String
@@ -36,8 +43,8 @@ class Business: NSObject {
         
         let location = dictionary["location"] as? NSDictionary
         var address = ""
-        var latitude: String? = nil
-        var longitude: String? = nil
+        var latitude: Double? = nil
+        var longitude: Double? = nil
         if location != nil {
             let addressArray = location!["address"] as? NSArray
             if addressArray != nil && addressArray!.count > 0 {
@@ -52,15 +59,16 @@ class Business: NSObject {
                 address += neighborhoods![0] as! String
             }
             if let coordinate = location!["coordinate"] as? NSDictionary {
-                latitude = coordinate["latitude"] as? String
-                longitude = coordinate["longitude"] as? String
+                latitude = coordinate["latitude"] as? Double
+                longitude = coordinate["longitude"] as? Double
             }
 
         }
         self.address = address
         self.latitude = latitude
         self.longitude = longitude
-        
+        self.coordinate = CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!)
+
         let categoriesArray = dictionary["categories"] as? [[String]]
         if categoriesArray != nil {
             var categoryNames = [String]()

@@ -28,6 +28,7 @@
 		C462C8C71F74879A009E1BB4 /* Distance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C8C61F74879A009E1BB4 /* Distance.swift */; };
 		C462C8C91F748A7F009E1BB4 /* SortBy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C8C81F748A7F009E1BB4 /* SortBy.swift */; };
 		C47879CC1F75BB2B006D1C29 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47879CB1F75BB2B006D1C29 /* DetailsViewController.swift */; };
+		C47879CE1F7603BA006D1C29 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47879CD1F7603BA006D1C29 /* MapViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		C462C8C61F74879A009E1BB4 /* Distance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Distance.swift; sourceTree = "<group>"; };
 		C462C8C81F748A7F009E1BB4 /* SortBy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortBy.swift; sourceTree = "<group>"; };
 		C47879CB1F75BB2B006D1C29 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
+		C47879CD1F7603BA006D1C29 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		C79C0AC126EDAA235847CEA2 /* Pods_Yelp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Yelp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF53DC2D7A8303A68532E7C6 /* Pods-Yelp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Yelp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Yelp/Pods-Yelp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -177,6 +179,7 @@
 		22AAAA9D1AEA1EC600A544AF /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C47879CD1F7603BA006D1C29 /* MapViewController.swift */,
 				C462C8B71F746092009E1BB4 /* FilterViewController.swift */,
 				C47879CB1F75BB2B006D1C29 /* DetailsViewController.swift */,
 				22AAAA9B1AEA1EC300A544AF /* BusinessesViewController.swift */,
@@ -448,6 +451,7 @@
 				C462C8C51F7484EA009E1BB4 /* FiltersViewModel.swift in Sources */,
 				C462C8C11F74671D009E1BB4 /* CategoryCell.swift in Sources */,
 				C47879CC1F75BB2B006D1C29 /* DetailsViewController.swift in Sources */,
+				C47879CE1F7603BA006D1C29 /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
