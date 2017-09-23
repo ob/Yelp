@@ -91,6 +91,9 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
                                     self?.totalResults = results!
                                     self?.businesses = businesses
                                     self?.tableView.reloadData()
+                                    if let annotations = self?.mapView.annotations {
+                                        self?.mapView.removeAnnotations(annotations)
+                                    }
                                     if let businessList = self?.businesses {
                                         for business in businessList {
                                             self?.mapView.addAnnotation(business)
@@ -165,10 +168,10 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBAction func didTapListMapButton(_ sender: Any) {
         if listMapButton.title == "Map" {
             listMapButton.title = "List"
-            UIView.transition(from: tableView, to: mapView, duration: 0.5, options: .transitionFlipFromLeft, completion: nil)
+            UIView.transition(from: tableView, to: mapView, duration: 0.5, options: [.transitionFlipFromLeft, .showHideTransitionViews], completion: nil)
         } else {
             listMapButton.title = "Map"
-            UIView.transition(from: mapView, to: tableView, duration: 0.5, options: .transitionFlipFromRight, completion: nil)
+            UIView.transition(from: mapView, to: tableView, duration: 0.5, options: [.transitionFlipFromRight, .showHideTransitionViews], completion: nil)
         }
     }
 
