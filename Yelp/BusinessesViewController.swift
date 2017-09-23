@@ -29,7 +29,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     var offset = 0
     var limit = 20
     var totalResults = 0
-
+    let regionRadius: CLLocationDistance = 1000
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,7 +51,8 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         listMapButton.title = "Map"
 
         navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.8288504481, green: 0.1372715533, blue: 0.1384659708, alpha: 1)
-
+        let initialLocation = CLLocation(latitude: 37.785771, longitude: -122.406165)
+        centerMapOnLocation(location: initialLocation)
         doSearch()
     }
 
@@ -59,7 +60,12 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
+    func centerMapOnLocation(location: CLLocation) {
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
+                                                                  regionRadius, regionRadius)
+        mapView.setRegion(coordinateRegion, animated: true)
+    }
 
     // MARK: - Search bar delegate
     
@@ -85,6 +91,11 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
                                     self?.totalResults = results!
                                     self?.businesses = businesses
                                     self?.tableView.reloadData()
+                                    if let businessList = self?.businesses {
+                                        for business in businessList {
+                                            self?.mapView.addAnnotation(business)
+                                        }
+                                    }
         })
     }
 
