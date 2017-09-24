@@ -8,28 +8,11 @@
 
 import UIKit
 
-// https://stackoverflow.com/questions/42545955/scale-image-to-smaller-size-in-swift3
-extension UIImage{
-
-    func resizeImageWith(newSize: CGSize) -> UIImage {
-        let horizontalRatio = newSize.width / size.width
-        let verticalRatio = newSize.height / size.height
-
-        let ratio = max(horizontalRatio, verticalRatio)
-        let newSize = CGSize(width: size.width * ratio, height: size.height * ratio)
-        UIGraphicsBeginImageContextWithOptions(newSize, true, 0)
-        draw(in: CGRect(origin: CGPoint(x: 0, y: 0), size: newSize))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return newImage!
-    }
-}
-
 class CategoryCell: UITableViewCell {
 
     @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var categorySwitch: CustomSwitch!
-    
+
     var item: Category? {
         didSet {
             categoryLabel.text = item?.name

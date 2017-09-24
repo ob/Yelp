@@ -15,7 +15,11 @@ final class CustomSwitch: UIControl {
 
     // MARK: Public properties
 
-    @IBInspectable public var isOn:Bool = true
+    @IBInspectable public var isOn:Bool = false {
+        didSet {
+            self.layoutSubviews()
+        }
+    }
 
     public var animationDuration: Double = 0.5
 
