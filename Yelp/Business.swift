@@ -17,6 +17,7 @@ class Business: NSObject, MKAnnotation {
     let id: String?
     let name: String?
     let address: String?
+    let closed: Bool?
     let imageURL: URL?
     let categories: String?
     let distance: String?
@@ -97,6 +98,8 @@ class Business: NSObject, MKAnnotation {
         }
         
         reviewCount = dictionary["review_count"] as? NSNumber
+
+        self.closed = dictionary["is_closed"] as? Bool
     }
 
     func moreDetails(completion: @escaping () -> Void) {

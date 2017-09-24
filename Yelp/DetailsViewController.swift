@@ -17,8 +17,8 @@ class DetailsViewController: UIViewController {
     @IBOutlet weak var reviewsLabel: UILabel!
     @IBOutlet weak var categoriesLabel: UILabel!
     @IBOutlet weak var openNowLabel: UILabel!
-    @IBOutlet weak var openingHoursLabel: UILabel!
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var addressLabel: UILabel!
 
     var business: Business?
     let regionRadius: CLLocationDistance = 1000
@@ -36,6 +36,19 @@ class DetailsViewController: UIViewController {
         nameLabel.text = business?.name
         reviewsLabel.text = business?.prettyReviews()
         categoriesLabel.text = business?.categories
+
+        if let closed = business?.closed {
+            if closed {
+                openNowLabel.text = "Closed"
+                openNowLabel.textColor = #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)
+            } else {
+                openNowLabel.text = "Open"
+                openNowLabel.textColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
+            }
+        }
+
+        addressLabel.text = business?.address
+
         if let url = business?.imageURL {
             businessImageView.setImageWith(url)
         }

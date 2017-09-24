@@ -340,7 +340,6 @@ extension FiltersViewModel: UITableViewDataSource, UITableViewDelegate {
             if let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath) as? CategoryCell,
                 let item = item as? FiltersViewModelCategoriesItem {
                 if item.collapsed && indexPath.row == item.barrier {
-                    print("Barrier mode")
                     let cell = UITableViewCell()
                     let hiddenOptions = item.countHiddenOptions()
                     if hiddenOptions > 0 {
