@@ -137,11 +137,6 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
             let currentBusiness = businesses?[indexPath.row] {
             vc.business = currentBusiness
         }
-        if let nc = segue.destination as? UINavigationController,
-            let vc = nc.viewControllers.first as? MapViewController {
-            vc.filtersModel = filtersModel
-            vc.businesses = businesses
-        }
     }
 
     // MARK: - tableView data source
