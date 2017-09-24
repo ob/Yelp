@@ -57,7 +57,9 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+* Getting the custom switch to work was a bit troublesome.
+* Xcode crashed on me a few times. The simulator got super slow for no
+  reason and rebooting seemed to help.
 
 ## License
 
