@@ -49,7 +49,7 @@ ways, etc):
 
 Here's a walkthrough of implemented user stories:
 
-![screenshot](/images/Yelp.gif?raw=true "Screenshot of Yelp")
+ ![screenshot](/images/Yelp.gif?raw=true "Screenshot of Yelp")
 
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
