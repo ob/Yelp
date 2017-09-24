@@ -204,10 +204,10 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last?.coordinate {
             userLocation = locations.last!.coordinate
-            let center = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
-            let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
-            mapView.setRegion(region, animated: true)
             if businesses == nil {
+                let center = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
+                let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+                mapView.setRegion(region, animated: true)
                 doSearch()
             }
         }
