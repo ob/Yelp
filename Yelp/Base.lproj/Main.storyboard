@@ -187,23 +187,44 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Offering a Deal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4f7-5V-wMJ">
-                                                    <rect key="frame" x="16" y="12" width="122.5" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="122.5" id="112-YW-pf0"/>
-                                                    </constraints>
+                                                    <rect key="frame" x="16" y="12" width="169.5" height="21"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4d9-v1-aYs" customClass="CustomSwitch" customModule="Yelp" customModuleProvider="target">
+                                                    <rect key="frame" x="317" y="6" width="50" height="30"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="21L-ig-jor"/>
+                                                        <constraint firstAttribute="width" constant="50" id="tEh-6d-Hjn"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="onTintColor">
+                                                            <color key="value" red="0.82885044809999997" green="0.13727155329999999" blue="0.1384659708" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="offTintColor">
+                                                            <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="image" keyPath="thumbImage" value="yelpcircle"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="onTap:" destination="fRM-Gk-NIk" eventType="valueChanged" id="pGA-1K-92T"/>
+                                                    </connections>
+                                                </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="4f7-5V-wMJ" firstAttribute="centerY" secondItem="p2p-v5-P4o" secondAttribute="centerY" id="l12-GL-5BT"/>
-                                                <constraint firstItem="4f7-5V-wMJ" firstAttribute="leading" secondItem="p2p-v5-P4o" secondAttribute="leadingMargin" constant="8" id="yCO-T4-fhb"/>
-                                                <constraint firstAttribute="trailingMargin" relation="lessThanOrEqual" secondItem="4f7-5V-wMJ" secondAttribute="trailing" constant="228.5" id="yhj-om-QlF"/>
+                                                <constraint firstItem="4f7-5V-wMJ" firstAttribute="centerY" secondItem="p2p-v5-P4o" secondAttribute="centerY" id="BWc-R7-XjE"/>
+                                                <constraint firstItem="4d9-v1-aYs" firstAttribute="leading" secondItem="4f7-5V-wMJ" secondAttribute="trailing" constant="131.5" id="LEr-cR-1Wm"/>
+                                                <constraint firstItem="4d9-v1-aYs" firstAttribute="centerY" secondItem="p2p-v5-P4o" secondAttribute="centerY" id="ZH9-JO-HJV"/>
+                                                <constraint firstAttribute="trailing" secondItem="4d9-v1-aYs" secondAttribute="trailing" constant="8" id="aag-Ek-UBW"/>
+                                                <constraint firstItem="4d9-v1-aYs" firstAttribute="leading" secondItem="4f7-5V-wMJ" secondAttribute="trailing" constant="131.5" id="dGZ-It-Ebn"/>
+                                                <constraint firstItem="4f7-5V-wMJ" firstAttribute="leading" secondItem="p2p-v5-P4o" secondAttribute="leadingMargin" constant="8" id="roz-26-LHJ"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="dealLabel" destination="4f7-5V-wMJ" id="M75-YN-4Wd"/>
+                                            <outlet property="dealSwitch" destination="4d9-v1-aYs" id="Vba-Cx-PXo"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DistanceCell" id="F4R-Ab-o6a" customClass="DistanceCell" customModule="Yelp" customModuleProvider="target">
@@ -262,34 +283,46 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gjZ-dD-rQa">
-                                                    <rect key="frame" x="16" y="11" width="92" height="21"/>
+                                                    <rect key="frame" x="16" y="11" width="70.5" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="21" id="QhC-tF-RJC"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1VD-hF-HRs">
-                                                    <rect key="frame" x="320" y="6" width="49" height="31"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rA4-Y2-ClB" customClass="CustomSwitch" customModule="Yelp" customModuleProvider="target">
+                                                    <rect key="frame" x="317" y="7" width="50" height="30"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="31" id="J72-NN-vr5"/>
-                                                        <constraint firstAttribute="width" constant="47" id="hYV-Nu-AdP"/>
+                                                        <constraint firstAttribute="width" constant="50" id="0IL-LM-8af"/>
+                                                        <constraint firstAttribute="height" constant="30" id="37G-r6-UEi"/>
                                                     </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="onTintColor">
+                                                            <color key="value" red="0.82885044809999997" green="0.13727155329999999" blue="0.1384659708" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="offTintColor">
+                                                            <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="image" keyPath="thumbImage" value="yelpcircle"/>
+                                                    </userDefinedRuntimeAttributes>
                                                     <connections>
-                                                        <action selector="switchTapped:" destination="dnO-yE-xZK" eventType="valueChanged" id="yyU-XX-fqi"/>
+                                                        <action selector="switchTapped:" destination="dnO-yE-xZK" eventType="valueChanged" id="Kjq-hQ-BZ5"/>
                                                     </connections>
-                                                </switch>
+                                                </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="1VD-hF-HRs" firstAttribute="centerY" secondItem="s6Q-eA-JFN" secondAttribute="centerY" id="8wh-m5-7WS"/>
-                                                <constraint firstAttribute="trailing" secondItem="1VD-hF-HRs" secondAttribute="trailing" constant="8" id="UaX-N3-nJQ"/>
-                                                <constraint firstItem="gjZ-dD-rQa" firstAttribute="centerY" secondItem="s6Q-eA-JFN" secondAttribute="centerY" id="ho8-ze-924"/>
-                                                <constraint firstItem="1VD-hF-HRs" firstAttribute="leading" relation="lessThanOrEqual" secondItem="gjZ-dD-rQa" secondAttribute="trailing" constant="212" id="nhs-62-zDC"/>
-                                                <constraint firstAttribute="trailingMargin" relation="lessThanOrEqual" secondItem="gjZ-dD-rQa" secondAttribute="trailing" constant="268" id="rt7-7U-0IN"/>
-                                                <constraint firstItem="gjZ-dD-rQa" firstAttribute="leading" secondItem="s6Q-eA-JFN" secondAttribute="leadingMargin" constant="8" id="zUS-xe-9hZ"/>
+                                                <constraint firstItem="rA4-Y2-ClB" firstAttribute="centerY" secondItem="s6Q-eA-JFN" secondAttribute="centerY" id="FId-3L-cBU"/>
+                                                <constraint firstItem="gjZ-dD-rQa" firstAttribute="leading" secondItem="s6Q-eA-JFN" secondAttribute="leadingMargin" constant="8" id="FWo-Bq-Scz"/>
+                                                <constraint firstItem="gjZ-dD-rQa" firstAttribute="centerY" secondItem="s6Q-eA-JFN" secondAttribute="centerY" id="Hvk-eN-wif"/>
+                                                <constraint firstItem="rA4-Y2-ClB" firstAttribute="leading" relation="lessThanOrEqual" secondItem="gjZ-dD-rQa" secondAttribute="trailing" constant="230.5" id="aC8-Mc-WJd"/>
+                                                <constraint firstAttribute="trailing" secondItem="rA4-Y2-ClB" secondAttribute="trailing" constant="8" id="nCW-27-GZ7"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="categoryLabel" destination="gjZ-dD-rQa" id="skK-xk-bcC"/>
-                                            <outlet property="categorySwitch" destination="1VD-hF-HRs" id="018-pc-6cF"/>
+                                            <outlet property="categorySwitch" destination="rA4-Y2-ClB" id="cC6-Hd-a1l"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -323,7 +356,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PUZ-Jq-4hG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3617" y="582"/>
+            <point key="canvasLocation" x="3616.8000000000002" y="580.65967016491754"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="q76-ej-5dw">
@@ -504,4 +537,7 @@
             <point key="canvasLocation" x="2903" y="582"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="yelpcircle" width="50" height="50"/>
+    </resources>
 </document>

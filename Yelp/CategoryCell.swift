@@ -28,8 +28,8 @@ extension UIImage{
 class CategoryCell: UITableViewCell {
 
     @IBOutlet weak var categoryLabel: UILabel!
-    @IBOutlet weak var categorySwitch: UISwitch!
-
+    @IBOutlet weak var categorySwitch: CustomSwitch!
+    
     var item: Category? {
         didSet {
             categoryLabel.text = item?.name
@@ -40,11 +40,6 @@ class CategoryCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // This is super-lame
-        let size = 44
-        let img = #imageLiteral(resourceName: "yelpcircle").resizeImageWith(newSize: CGSize(width: size, height: size))
-        categorySwitch.thumbTintColor = UIColor.init(patternImage: img)
-        categorySwitch.onTintColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
     }
 
     @IBAction func switchTapped(_ sender: Any) {
