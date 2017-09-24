@@ -3,7 +3,7 @@
 **Yelp** is a Yelp search app using the [Yelp
 API](http://www.yelp.com/developers/documentation/v2/search_api).
 
-Time spent: **12.5** hours spent in total
+Time spent: **13.5** hours spent in total
 
 ## User Stories
 
@@ -35,8 +35,7 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-- [ ] List anything else that you can get done to improve the app
-  functionality!
+- [x] Uses GPS to determine real user location.
 
 Please list two areas of the assignment you'd like to **discuss
 further with your peers** during the next class (examples include

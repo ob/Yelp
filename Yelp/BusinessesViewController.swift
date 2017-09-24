@@ -11,7 +11,7 @@ import MapKit
 
 let DEFAULT_QUERY = "Restaurants"
 
-class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
+class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, CLLocationManagerDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var mapView: MKMapView!
@@ -29,6 +29,8 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     var offset = 0
     var limit = 20
     var totalResults = 0
+    var locationManager: CLLocationManager?
+    var userLocation: CLLocationCoordinate2D?
     let regionRadius: CLLocationDistance = 1000
 
     override func viewDidLoad() {
@@ -48,23 +50,29 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         searchbar.sizeToFit()
         navigationItem.titleView = searchbar
 
+        locationManager = CLLocationManager()
+        locationManager!.delegate = self
+
         listMapButton.title = "Map"
 
         navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.8288504481, green: 0.1372715533, blue: 0.1384659708, alpha: 1)
-        let initialLocation = CLLocation(latitude: 37.785771, longitude: -122.406165)
-        centerMapOnLocation(location: initialLocation)
-        doSearch()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+            locationManager!.startUpdatingLocation()
+        } else {
+            locationManager!.requestWhenInUseAuthorization()
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        locationManager!.stopUpdatingLocation()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-
-    func centerMapOnLocation(location: CLLocation) {
-        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
-                                                                  regionRadius, regionRadius)
-        mapView.setRegion(coordinateRegion, animated: true)
     }
 
     // MARK: - Search bar delegate
@@ -83,6 +91,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         isDataLoading = true
         offset = 0
         Business.searchWithTerm(term: query,
+                                location: userLocation,
                                 filterModel: filtersModel,
                                 offset: offset,
                                 limit: limit,
@@ -110,6 +119,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         isDataLoading = true
         spinner?.startAnimating()
         Business.searchWithTerm(term: query,
+                                location: userLocation,
                                 filterModel: filtersModel,
                                 offset: offset,
                                 limit: limit,
@@ -169,5 +179,39 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
             UIView.transition(from: mapView, to: tableView, duration: 0.5, options: [.transitionFlipFromRight, .showHideTransitionViews], completion: nil)
         }
     }
+
+    // MARK: - CLLocationManagerDelegate
+
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .notDetermined:
+            NSLog("Not determined")
+        case .authorizedAlways:
+            NSLog("Authorized Always")
+        case .denied:
+            NSLog("denied")
+        case .restricted:
+            NSLog("restricted")
+        case .authorizedWhenInUse:
+            locationManager!.startUpdatingLocation()
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        NSLog("Failed to initialize GPS")
+    }
+
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last?.coordinate {
+            userLocation = locations.last!.coordinate
+            let center = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
+            let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+            mapView.setRegion(region, animated: true)
+            if businesses == nil {
+                doSearch()
+            }
+        }
+    }
+
 
 }

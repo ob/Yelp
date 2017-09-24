@@ -124,8 +124,8 @@ class Business: NSObject, MKAnnotation {
         return businesses
     }
 
-    class func searchWithTerm(term: String, filterModel: FiltersViewModel, offset: Int?, limit: Int?, completion: @escaping ([Business]?, Int?, Error?) -> Void) {
-        _ = YelpClient.sharedInstance.searchWithTerm(term, filterModel: filterModel, offset: offset, limit: limit, completion: completion)
+    class func searchWithTerm(term: String, location: CLLocationCoordinate2D?, filterModel: FiltersViewModel, offset: Int?, limit: Int?, completion: @escaping ([Business]?, Int?, Error?) -> Void) {
+        _ = YelpClient.sharedInstance.searchWithTerm(term, location: location, filterModel: filterModel, offset: offset, limit: limit, completion: completion)
     }
 
     func prettyReviews() -> String {

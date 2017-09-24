@@ -11,6 +11,8 @@ import UIKit
 import AFNetworking
 import BDBOAuth1Manager
 
+import MapKit
+
 // You can register for Yelp API keys here: http://www.yelp.com/developers/manage_api_keys
 let yelpConsumerKey = "vxKwwcR_NMQ7WaEiQBK_CA"
 let yelpConsumerSecret = "33QCvh5bIF5jIHR5klQr7RtBDhQ"
@@ -39,8 +41,15 @@ class YelpClient: BDBOAuth1RequestOperationManager {
         self.requestSerializer.saveAccessToken(token)
     }
 
-    func searchWithTerm(_ term: String, filterModel: FiltersViewModel, offset: Int?, limit: Int?, completion: @escaping ([Business]?, Int?, Error?) -> Void) -> AFHTTPRequestOperation {
-        var parameters: [String : AnyObject] = ["term": term as AnyObject, "ll": "37.785771,-122.406165" as AnyObject]
+    func searchWithTerm(_ term: String, location: CLLocationCoordinate2D?, filterModel: FiltersViewModel, offset: Int?, limit: Int?, completion: @escaping ([Business]?, Int?, Error?) -> Void) -> AFHTTPRequestOperation {
+        var parameters: [String : AnyObject] = ["term": term as AnyObject]
+
+        if let location = location {
+            let realLocation = String(format: "%f,%f", location.latitude, location.longitude) as AnyObject
+            parameters["ll"] = realLocation
+        } else {
+            parameters["ll"] = "37.785771,-122.406165" as AnyObject
+        }
 
         for model in filterModel.items {
             if let value = model.yelpAPIValue() {
