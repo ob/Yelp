@@ -223,6 +223,16 @@ class FiltersViewModelCategoriesItem: FiltersViewModelItem {
             selected = oldSelected
         }
     }
+
+    func countHiddenOptions() -> Int {
+        var count = 0
+        for (k, v) in selected {
+            if k >= barrier  && v {
+                count += 1
+            }
+        }
+        return count
+    }
 }
 
 class FiltersViewModel: NSObject {
@@ -256,6 +266,23 @@ class FiltersViewModel: NSObject {
         ret.image = #imageLiteral(resourceName: "down-arrow")
         return ret
     }
+
+    func checkCell(cell: UITableViewCell) {
+        let imgView = UIImageView(frame: CGRect(x: 12, y: 12, width: 12, height: 12))
+        imgView.contentMode = .scaleAspectFit
+        imgView.image = #imageLiteral(resourceName: "circle-full").withRenderingMode(.alwaysTemplate)
+        imgView.tintColor = #colorLiteral(red: 0.8288504481, green: 0.1372715533, blue: 0.1384659708, alpha: 1)
+        cell.accessoryView = imgView
+    }
+
+    func uncheckCell(cell: UITableViewCell) {
+        let imgView = UIImageView(frame: CGRect(x: 12, y:12, width: 12, height: 12))
+        imgView.contentMode = .scaleAspectFit
+        imgView.image = #imageLiteral(resourceName: "circle-empty").withRenderingMode(.alwaysTemplate)
+        imgView.tintColor = #colorLiteral(red: 0.8288504481, green: 0.1372715533, blue: 0.1384659708, alpha: 1)
+        cell.accessoryView = imgView
+    }
+
 }
 
 extension FiltersViewModel: UITableViewDataSource, UITableViewDelegate {
@@ -286,9 +313,9 @@ extension FiltersViewModel: UITableViewDataSource, UITableViewDelegate {
                 } else {
                     cell.item = item.distances[indexPath.row]
                     if item.selected! == indexPath.row {
-                        cell.accessoryType = .checkmark
+                        checkCell(cell: cell)
                     } else {
-                        cell.accessoryType = .none
+                        uncheckCell(cell: cell)
                     }
                 }
                 return cell
@@ -302,9 +329,9 @@ extension FiltersViewModel: UITableViewDataSource, UITableViewDelegate {
                 } else {
                     cell.item = item.options[indexPath.row]
                     if item.selected! == indexPath.row {
-                        cell.accessoryType = .checkmark
+                        checkCell(cell: cell)
                     } else {
-                        cell.accessoryType = .none
+                        uncheckCell(cell: cell)
                     }
                 }
                 return cell
@@ -314,7 +341,12 @@ extension FiltersViewModel: UITableViewDataSource, UITableViewDelegate {
                 let item = item as? FiltersViewModelCategoriesItem {
                 if item.collapsed && indexPath.row == item.barrier {
                     let cell = UITableViewCell()
-                    cell.textLabel?.text = "See More"
+                    let hiddenOptions = item.countHiddenOptions()
+                    if hiddenOptions > 0 {
+                        cell.textLabel?.text = String(format: "See More (%d selected)", hiddenOptions)
+                    } else {
+                        cell.textLabel?.text = "See More"
+                    }
                     cell.textLabel?.textAlignment = .center
                     return cell
                 } else {
@@ -350,8 +382,8 @@ extension FiltersViewModel: UITableViewDataSource, UITableViewDelegate {
                     if item.selected! != indexPath.row {
                         let ip = IndexPath(row: item.selected!, section: indexPath.section)
                         let selectedCell = tableView.cellForRow(at: ip)!
-                        selectedCell.accessoryType = .none
-                        cell.accessoryType = .checkmark
+                        uncheckCell(cell: selectedCell)
+                        checkCell(cell: cell)
                         item.selected = indexPath.row
                         item.collapsed = true
                         tableView.reloadSections([indexPath.section], with: .automatic)
@@ -369,8 +401,8 @@ extension FiltersViewModel: UITableViewDataSource, UITableViewDelegate {
                     if item.selected != indexPath.row {
                         let ip = IndexPath(row: item.selected!, section: indexPath.section)
                         let selectedCell = tableView.cellForRow(at: ip)!
-                        selectedCell.accessoryType = .none
-                        cell.accessoryType = .checkmark
+                        uncheckCell(cell: selectedCell)
+                        checkCell(cell: cell)
                         item.selected = indexPath.row
                         item.collapsed = true
                         tableView.reloadSections([indexPath.section], with: .automatic)
