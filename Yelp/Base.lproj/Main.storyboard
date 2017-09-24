@@ -195,27 +195,15 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fnj-Tn-cjQ">
-                                                    <rect key="frame" x="316" y="7" width="49" height="31"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="31" id="4Hd-je-LSF"/>
-                                                        <constraint firstAttribute="width" constant="47" id="dzW-jP-19n"/>
-                                                    </constraints>
-                                                    <connections>
-                                                        <action selector="onTap:" destination="fRM-Gk-NIk" eventType="valueChanged" id="K20-Lm-8m8"/>
-                                                    </connections>
-                                                </switch>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="fnj-Tn-cjQ" firstAttribute="centerY" secondItem="p2p-v5-P4o" secondAttribute="centerY" id="AeH-HT-7Dx"/>
-                                                <constraint firstItem="fnj-Tn-cjQ" firstAttribute="leading" relation="lessThanOrEqual" secondItem="4f7-5V-wMJ" secondAttribute="trailing" constant="177.5" id="HiW-Ze-NJA"/>
                                                 <constraint firstItem="4f7-5V-wMJ" firstAttribute="centerY" secondItem="p2p-v5-P4o" secondAttribute="centerY" id="l12-GL-5BT"/>
-                                                <constraint firstAttribute="trailing" secondItem="fnj-Tn-cjQ" secondAttribute="trailing" constant="12" id="w2S-QW-xtQ"/>
                                                 <constraint firstItem="4f7-5V-wMJ" firstAttribute="leading" secondItem="p2p-v5-P4o" secondAttribute="leadingMargin" constant="8" id="yCO-T4-fhb"/>
+                                                <constraint firstAttribute="trailingMargin" relation="lessThanOrEqual" secondItem="4f7-5V-wMJ" secondAttribute="trailing" constant="228.5" id="yhj-om-QlF"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="dealSwitch" destination="fnj-Tn-cjQ" id="WxO-W0-gSr"/>
+                                            <outlet property="dealLabel" destination="4f7-5V-wMJ" id="M75-YN-4Wd"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DistanceCell" id="F4R-Ab-o6a" customClass="DistanceCell" customModule="Yelp" customModuleProvider="target">
