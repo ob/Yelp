@@ -26,7 +26,7 @@ The following **optional** features are implemented:
    - [x] Infinite scroll for restaurant results.
    - [x] Implement map view of restaurant results.
 - [x] Filter page
-   - [ ] Implement a custom switch instead of the default UISwitch.
+   - [x] Implement a custom switch instead of the default UISwitch.
    - [x] Distance filter should expand as in the real Yelp app
    - [x] Categories should show a subset of the full list with a "See
      All" row to expand. Category list is
